@@ -2,7 +2,7 @@
 
 
 
-The following code accompanies the [tutorial] ( TODO: Link to be added)  - which includes the full walkthrough
+The following code accompanies the  [tutorial](https://cloud.google.com/solutions/automating-classification-of-data-uploaded-to-cloud-storage)  - which includes the full walkthrough
 
 Pre-reqs : See tutorial
 

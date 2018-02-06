@@ -12,14 +12,14 @@ Each example is accompanied by a tutorial which has the full walkthrough.
 
 Clone this repository
 
-` git clone https://github.com/GoogleCloudPlatform/dlp-functions-examples.git`
+` git clone https://github.com/GoogleCloudPlatform/dlp-cloud-functions-tutorials.git`
 
 Change directory to one of the example directories 
 
-Follow the walthrough in the accompanying tutorial for each example
+Follow the walkthrough in the accompanying tutorial for each example
 
 Note: you may wish to reuse the same project  to try all examples if so :
-* Ensure you delete all files from the buckets yopu configured for the first tutorial in the series befoe re-using.
+* Ensure you delete all files from the buckets you configured for the first tutorial in the series befoe re-using.
 * Delete any exsting cloud functions you have deployed 
 
 ## License
