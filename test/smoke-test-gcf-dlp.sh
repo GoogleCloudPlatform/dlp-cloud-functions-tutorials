@@ -17,7 +17,7 @@ test_project="Your-test-project"
 stage_bucket="your-quarantine-bucket"
 sensitive_bucket="your-sensitive-data-bucket"
 non_sensitive_bucket="your-nonsensitive-data-bucket"
-sensitive_file="sample_s01.csv"
+sensitive_file="sample_s02.csv"
 non_sensitive_file="sample_n01.txt"
 
 export PROJECT_ID=$(gcloud config get-value project)

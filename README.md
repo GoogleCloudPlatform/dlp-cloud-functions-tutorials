@@ -1,6 +1,6 @@
 # Serverless Data Loss Prevention examples
 
-This repository contains a set of 'serverless" examples to illustrate how to use the Data Loss Prevention API without managing any servers.
+This repository contains a set of 'serverless' examples to illustrate how to use the Data Loss Prevention API without managing any servers.
 
 
 ## How to use the examples
