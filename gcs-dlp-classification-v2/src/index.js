@@ -17,7 +17,9 @@
 
 // Start the debug agent. Remove or comment out if not required
 require('@google-cloud/debug-agent').start();
-// User-configurable constants
+
+
+// User-configurable constants:
 
 // The minimum likelihood required before returning a match
 const MIN_LIKELIHOOD = 'LIKELIHOOD_UNSPECIFIED';
@@ -34,7 +36,6 @@ const INFO_TYPES = [
 
 // The bucket the to-be-scanned files are uploaded to
 const STAGING_BUCKET = '[YOUR_QUARANTINE_BUCKET]';
-
 // The bucket to move "safe" files to
 const NONSENSITIVE_BUCKET = '[YOUR_NON_SENSITIVE_DATA_BUCKET]';
 
@@ -49,6 +50,7 @@ const PUB_SUB_TOPIC = '[PUB/SUB TOPIC]';
 
 // Pub/Sub subscription to use when listening for job complete notifications
 const PUB_SUB_SUB = '[PUB/SUB SUBSCRIPTION]';
+
 
 // Initialize the Google Cloud client libraries
 const DLP = require('@google-cloud/dlp');
@@ -92,50 +94,48 @@ function inspectGCSFile(
     minLikelihood,
     maxFindings,
     infoTypes,
-    done
-    ) {
+    done) {
+  // Get reference to the file to be inspected
+  const storageItem = {
+    cloudStorageOptions: {
+      fileSet: {url: `gs://${bucketName}/${fileName}`},
+    },
+  };
 
-    // Get reference to the file to be inspected
-    const storageItem = {
-      cloudStorageOptions: {
-        fileSet: {url: `gs://${bucketName}/${fileName}`},
+  // Construct REST request for creating an inspect job
+  const request = {
+    parent: dlp.projectPath(projectId),
+    inspectJob: {
+      inspectConfig: {
+        infoTypes: infoTypes,
+        minLikelihood: minLikelihood,
+        limits: {
+          maxFindingsPerRequest: maxFindings,
+        },
       },
-    };
-
-    // Construct REST request for creating an inspect job
-    const request = {
-      parent: dlp.projectPath(projectId),
-      inspectJob: {
-        inspectConfig: {
-          infoTypes: infoTypes,
-          minLikelihood: minLikelihood,
-          limits: {
-            maxFindingsPerRequest: maxFindings,
+      storageConfig: storageItem,
+      actions: [
+        {
+          pubSub: {
+            topic: `projects/${projectId}/topics/${topicId}`,
           },
         },
-        storageConfig: storageItem,
-        actions: [
-          {
-            pubSub: {
-              topic: `projects/${projectId}/topics/${topicId}`,
-            },
-          },
-        ],
-      },
-    };
+      ],
+    },
+  };
 
-    // Verify the Pub/Sub topic and listen for job notifications via an
-    // existing subscription.
-    let subscription;
-    pubsub
-      .topic(topicId)
+  // Verify the Pub/Sub topic and listen for job notifications via an
+  // existing subscription.
+  let subscription;
+  pubsub.topic(topicId)
       .get()
       .then(topicResponse => {
         return topicResponse[0].subscription(subscriptionId);
       })
       .then(subscriptionResponse => {
         subscription = subscriptionResponse;
-        // Create a DLP GCS File inspection job and wait for it to complete (using promises)
+        // Create a DLP GCS File inspection job and wait for it to complete
+        // (using promises)
         return dlp.createDlpJob(request);
       })
       .then(jobsResponse => {
@@ -146,7 +146,8 @@ function inspectGCSFile(
         // Watch the Pub/Sub topic until the DLP job completes processing file
         return new Promise((resolve, reject) => {
           const messageHandler = message => {
-            if (message.attributes && message.attributes.DlpJobName === jobName) {
+            if (message.attributes &&
+                message.attributes.DlpJobName === jobName) {
               message.ack();
               subscription.removeListener('message', messageHandler);
               subscription.removeListener('error', errorHandler);
@@ -175,33 +176,34 @@ function inspectGCSFile(
         const job = wrappedJob[0];
         console.log(`Job ${job.name} status: ${job.state}`);
 
-        //set default destination to "sensitive" bucket
+        // set default destination to "sensitive" bucket
         var destBucketName = SENSITIVE_BUCKET;
 
         const infoTypeStats = job.inspectDetails.result.infoTypeStats;
         if (infoTypeStats.length > 0) {
           infoTypeStats.forEach(infoTypeStat => {
             console.log(
-              `  Found ${infoTypeStat.count} instance(s)` +
-              ` of infoType ${ infoTypeStat.infoType.name}.`);
+                `  Found ${infoTypeStat.count} instance(s)` +
+                ` of infoType ${infoTypeStat.infoType.name}.`);
           });
         } else {
-         // if no infotype mnatch set destination to "non sensitive" bucket
+          // if no infotype mnatch set destination to "non sensitive" bucket
           destBucketName = NONSENSITIVE_BUCKET;
           console.log('No Matching infoType.');
         }
-        //set destination to target bucket
+        // set destination to target bucket
         const destBucket = storage.bucket(destBucketName);
         // Move file to appropriate bucket
-        // NOTE: No atomic "move" option exists in GCS, so this may fail to delete the quarantined file
+        // NOTE: No atomic "move" option exists in GCS, so this may fail to
+        // delete the quarantined file
         return storage.bucket(bucketName).file(fileName).move(destBucket);
       })
       .catch((err) => {
-        if (err.message.toLowerCase().indexOf('not found') > -1){
-            console.error('[Fail] Error in inspectGCSFile:'+err);
-            done();
+        if (err.message.toLowerCase().indexOf('not found') > -1) {
+          console.error('[Fail] Error in inspectGCSFile:' + err);
+          done();
         } else {
-           console.error('[Retry] Error in inspectGCSFile:'+err);
+          console.error('[Retry] Error in inspectGCSFile:' + err);
           done(err);
         }
       });
