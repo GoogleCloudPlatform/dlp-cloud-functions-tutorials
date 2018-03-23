@@ -69,7 +69,7 @@ const pubsub = new Pubsub();
  * @param {object} event The Google Cloud Storage event.
  * @param {function} callback Called at completion of processing the file.
  */
-exports.dlpQuarantineGCSv2 = (event, callback) => {
+exports.dlpQuarantineGCS = (event, callback) => {
     var file = event.data;
     console.log('Processing file: ' + file.name);
     setTimeout(() => inspectGCSFile(
