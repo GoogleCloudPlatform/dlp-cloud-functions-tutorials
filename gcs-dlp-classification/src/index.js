@@ -49,7 +49,7 @@ const PROJECT_ID = '[PROJECT_ID HOSTING STAGING_BUCKET]';
 const PUB_SUB_TOPIC = '[PUB/SUB TOPIC]';
 
 // Pub/Sub subscription to use when listening for job complete notifications
-const PUB_SUB_SUB = '[PUB/SUB SUBSCRIPTION]';
+const PUB_SUB_SUBSCR = '[PUB/SUB SUBSCRIPTION]';
 
 
 // Initialize the Google Cloud client libraries
