@@ -1,14 +1,9 @@
 # Cloud function that uses the Data loss Prevention API to classify files uploaded to a Cloud storage bucket.
 
-The function is an upgrade to the gcs-dlp-classification example. This version
-introduces the use of Pub/Sub as a way for the DLP job to indicate when it has
-completed processing a file
 
-Pre-reqs : See the tutorial for the gcs-dlp-classification example
 
-*   In addition to the pre req steps outlined in the tutorial for the
-    gcs-dlp-classification example you need to create a Pub/Sub topic and a
-    corresponding subscription
+Pre-reqs : See the tutorial that accompnaies this example:
+https://cloud.google.com/solutions/automating-classification-of-data-uploaded-to-cloud-storage
 
 The workflow:
 
