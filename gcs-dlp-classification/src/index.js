@@ -198,6 +198,7 @@ function inspectGCSFile(
         // delete the quarantined file
         return storage.bucket(bucketName).file(fileName).move(destBucket);
       })
+      .then (() => {done()})
       .catch((err) => {
         if (err.message.toLowerCase().indexOf('not found') > -1) {
           console.error('[Fail] Error in inspectGCSFile:' + err);
