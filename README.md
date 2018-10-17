@@ -5,7 +5,7 @@ This repository contains a set of 'serverless' examples to illustrate how to use
 
 ## How to use the examples
 
-Each example is accompanied by a tutorial which has the full walkthrough. 
+Use the tutorial to understand how to configure your Google Cloud Platform project to use Cloud functions and the Data Loss Prevention API. 
 
 
 ## Quickstart
@@ -16,10 +16,10 @@ Clone this repository
 
 Change directory to one of the example directories 
 
-Follow the walkthrough in the accompanying tutorial for each example
+Follow the walkthrough in the accompanying tutorial for configuration details (Cloud Storage, Pub/Sub and IAM permissions)  and adapt accordingly using the accompanying README for each example . 
 
 Note: you may wish to reuse the same project  to try all examples if so :
-* Ensure you delete all files from the buckets you configured for the first tutorial in the series befoe re-using.
+* Ensure you delete all files from the buckets you configured for the first tutorial in the series before re-using.
 * Delete any exsting cloud functions you have deployed 
 
 ## License
