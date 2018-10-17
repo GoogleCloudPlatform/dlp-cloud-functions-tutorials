@@ -2,7 +2,7 @@
 
 
 
-Pre-reqs : See the tutorial that accompnaies this example:
+Pre-reqs : See the tutorial that accompanies this example:
 https://cloud.google.com/solutions/automating-classification-of-data-uploaded-to-cloud-storage
 
 The workflow:
