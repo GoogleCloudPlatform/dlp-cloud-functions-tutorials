@@ -31,6 +31,10 @@ Upload the sample files to `[YOUR_QUARANTINE_BUCKET]`
 
 https://github.com/googleapis/nodejs-dlp
 
+## Notes
+
+This example is a simple one-function demonstration/proof-of-concept. Its is not suitable for production. If you see any time out issues please adjust the Cloud Functions timeout value  to ~5 min instead of 60 seconds.
+
 ## License
 
 [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
