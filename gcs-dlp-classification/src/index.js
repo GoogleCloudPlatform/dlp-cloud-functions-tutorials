@@ -43,13 +43,13 @@ const NONSENSITIVE_BUCKET = '[YOUR_NON_SENSITIVE_DATA_BUCKET]';
 const SENSITIVE_BUCKET = '[YOUR_SENSITIVE_DATA_BUCKET]';
 
 // The project ID to run the DLP API call under
-const PROJECT_ID = '[PROJECT_ID HOSTING STAGING_BUCKET]';
+const PROJECT_ID = '[PROJECT_ID_HOSTING_STAGING_BUCKET]';
 
-// Pub/Sub topic to notify once the  DLP job completes
-const PUB_SUB_TOPIC = '[PUB/SUB TOPIC]';
+// Cloud Pub/Sub topic to notify once the  DLP job completes
+const PUB_SUB_TOPIC = '[PUB/SUB_TOPIC]';
 
-// Pub/Sub subscription to use when listening for job complete notifications
-const PUB_SUB_SUBSCR = '[PUB/SUB SUBSCRIPTION]';
+// Cloud Pub/Sub subscription to use when listening for job complete notifications
+const PUB_SUB_SUBSCR = '[PUB/SUB_SUBSCRIPTION]';
 
 
 // Initialize the Google Cloud client libraries
@@ -63,10 +63,10 @@ const Pubsub = require('@google-cloud/pubsub');
 const pubsub = new Pubsub();
 
 /**
- * Background Cloud Function to scan a GCS file using the DLP API and move it
+ * Background Cloud Function to scan a Cloud Storage file using the DLP API and move it
  * to another bucket based on the DLP API's findings
  *
- * @param {object} event The Google Cloud Storage event.
+ * @param {object} event The Cloud Storage event.
  * @param {function} callback Called at completion of processing the file.
  */
 exports.dlpQuarantineGCS = (event, callback) => {
@@ -124,7 +124,7 @@ function inspectGCSFile(
     },
   };
 
-  // Verify the Pub/Sub topic and listen for job notifications via an
+  // Verify the Cloud Pub/Sub topic and listen for job notifications via an
   // existing subscription.
   let subscription;
   pubsub.topic(topicId)
@@ -143,7 +143,7 @@ function inspectGCSFile(
         return jobsResponse[0].name;
       })
       .then(jobName => {
-        // Watch the Pub/Sub topic until the DLP job completes processing file
+        // Watch the Cloud Pub/Sub topic until the DLP job completes processing file
         return new Promise((resolve, reject) => {
           const messageHandler = message => {
             if (message.attributes &&
@@ -187,7 +187,7 @@ function inspectGCSFile(
                 ` of infoType ${infoTypeStat.infoType.name}.`);
           });
         } else {
-          // if no infotype mnatch set destination to "non sensitive" bucket
+          // if no infotype match set destination to "nonsensitive" bucket
           destBucketName = NONSENSITIVE_BUCKET;
           console.log('No Matching infoType.');
         }
