@@ -25,7 +25,7 @@ import os
 # ----------------------------
 #  User-configurable Constants
 
-PROJECT_ID = '[PROJECT_ID HOSTING STAGING_BUCKET]'
+PROJECT_ID = '[PROJECT_ID_HOSTING_STAGING_BUCKET]'
 """The bucket the to-be-scanned files are uploaded to."""
 STAGING_BUCKET = '[YOUR_QUARANTINE_BUCKET]'
 """The bucket to move "sensitive" files to."""
@@ -33,7 +33,7 @@ SENSITIVE_BUCKET = '[YOUR_SENSITIVE_DATA_BUCKET]'
 """The bucket to move "non sensitive" files to."""
 NONSENSITIVE_BUCKET = '[YOUR_NON_SENSITIVE_DATA_BUCKET]'
 """ Pub/Sub topic to notify once the  DLP job completes."""
-PUB_SUB_TOPIC = '[PUB/SUB TOPIC]'
+PUB_SUB_TOPIC = '[PUB/SUB_TOPIC]'
 """The minimum_likelihood (Enum) required before returning a match"""
 """For more info visit: https://cloud.google.com/dlp/docs/likelihood"""
 MIN_LIKELIHOOD = 'POSSIBLE'
@@ -60,7 +60,7 @@ def create_DLP_job(data, done):
 
        It creates a dlp job for the uploaded file.
     Arg:
-       data: The Google Cloud Storage Event
+       data: The Cloud Storage Event
     Returns:
         None. Debug information is printed to the log.
     """
@@ -116,21 +116,21 @@ def resolve_DLP(data, context):
     DLP job and moves the file to sensitive bucket or nonsensitive bucket
     accordingly.
     Args:
-        data: The Cloud PubSub event
+        data: The Cloud Pub/Sub event
 
     Returns:
         None. Debug information is printed to the log.
     """
   # Get the targeted DLP job name that is created by the create_DLP_job function
   job_name = data['attributes']['DlpJobName']
-  print('Recieved pub/sub notification from DLP job: {}'.format(job_name))
+  print('Received pub/sub notification from DLP job: {}'.format(job_name))
 
   # Get the DLP job details by the job_name
   job = dlp.get_dlp_job(job_name)
   print('Job Name:{name}\nStatus:{status}'.format(
       name=job.name, status=job.state))
 
-  # Fetching Filename in cloud storage from the original dlpJob config.
+  # Fetching Filename in Cloud Storage from the original dlpJob config.
   # See defintion of "JSON Output' in Limiting Cloud Storage Scans':
   # https://cloud.google.com/dlp/docs/inspecting-storage
 
