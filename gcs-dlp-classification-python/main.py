@@ -72,7 +72,7 @@ def create_DLP_job(data, done):
   info_types = [{'name': info_type} for info_type in INFO_TYPES]
 
   # Convert the project id into a full resource id.
-  parent = dlp.project_path(PROJECT_ID)
+  parent = f"projects/{PROJECT_ID}"
 
   # Construct the configuration dictionary.
   inspect_job = {
@@ -103,7 +103,7 @@ def create_DLP_job(data, done):
 
   # Create the DLP job and let the DLP api processes it.
   try:
-    dlp.create_dlp_job(parent, inspect_job)
+    dlp.create_dlp_job(parent=(parent), inspect_job=(inspect_job))
     print('Job created by create_DLP_job')
   except Exception as e:
     print(e)
@@ -126,7 +126,7 @@ def resolve_DLP(data, context):
   print('Received pub/sub notification from DLP job: {}'.format(job_name))
 
   # Get the DLP job details by the job_name
-  job = dlp.get_dlp_job(job_name)
+  job = dlp.get_dlp_job(request = {'name': job_name})
   print('Job Name:{name}\nStatus:{status}'.format(
       name=job.name, status=job.state))
 
