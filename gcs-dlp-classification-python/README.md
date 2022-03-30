@@ -19,21 +19,22 @@ The workflow:
 
 ## How to run the example
 
-Deploy the first Function setting the following environment variables. the topic does not contain project_id
+Update the following user configurable values in the main.py file  
 
 ```
-YOUR_PUB_SUB_TOPIC=
-YOUR_NON_SENSITIVE_DATA_BUCKET=
-YOUR_SENSITIVE_DATA_BUCKET=
-YOUR_QUARANTINE_BUCKET=
-YOUR_DLP_PUB_SUB_TOPIC_PROJECT_ID=
+[PROJECT_ID_DLP_JOB & TOPIC] Replace with your Project ID 
+[YOUR_NON_SENSITIVE_DATA_BUCKET] Replace with the name of the bucket where non sensitive data will be moved to
+[YOUR_SENSITIVE_DATA_BUCKET] Replace with the name of the bucket where sensitive data will be moved to
+[YOUR_QUARANTINE_BUCKET] Replace with the name of the bucket where you will upload your files to
+[PUB/SUB_TOPIC] Replace with your Pub/Sub topic name
 ```
+Deploy the first Function 
 
-`gcloud functions deploy gcs_file_upload_DLP_job --entry-point create_DLP_job --runtime python37 --trigger-resource ${YOUR_QUARANTINE_BUCKET} --trigger-event google.storage.object.finalize --set-env-vars=DLP_PROJECT_ID=${YOUR_DLP_PUB_SUB_TOPIC_PROJECT_ID} --set-env-vars=QUARANTINE_BUCKET=${YOUR_QUARANTINE_BUCKET} --set-env-vars=SENSITIVE_DATA_BUCKET=${YOUR_SENSITIVE_DATA_BUCKET} --set-env-vars=INSENSITIVE_DATA_BUCKET=${YOUR_NON_SENSITIVE_DATA_BUCKET} --set-env-vars=PUB_SUB_TOPIC=${YOUR_PUB_SUB_TOPIC} `
+`gcloud functions deploy gcs_file_upload_DLP_job --entry-point create_DLP_job --runtime python37 --trigger-resource ${YOUR_QUARANTINE_BUCKET} --trigger-event google.storage.object.finalize `
 
 Deploy the second function
 
-`gcloud functions deploy DLP_pub_classify_file --entry-point resolve_DLP --runtime python37 --trigger-topic ${YOUR_PUB_SUB_TOPIC} --set-env-vars=DLP_PROJECT_ID=${YOUR_DLP_PUB_SUB_TOPIC_PROJECT_ID} --set-env-vars=QUARANTINE_BUCKET=${YOUR_QUARANTINE_BUCKET} --set-env-vars=SENSITIVE_DATA_BUCKET=${YOUR_SENSITIVE_DATA_BUCKET} --set-env-vars=INSENSITIVE_DATA_BUCKET=${YOUR_NON_SENSITIVE_DATA_BUCKET} --set-env-vars=PUB_SUB_TOPIC=${YOUR_PUB_SUB_TOPIC}`
+`gcloud functions deploy DLP_pub_classify_file --entry-point resolve_DLP --runtime python37 --trigger-topic ${YOUR_PUB_SUB_TOPIC} `
 
 Change directories to the directory that contains the sample data
 
@@ -45,9 +46,6 @@ Upload the sample files to `${YOUR_QUARANTINE_BUCKET}`
 
 https://cloud.google.com/dlp/docs/libraries
 
-## Notes
-
-Resolves the time-out issue of the Node.JS example when analyzing a file that is larger than 200MB.
 
 ## License
 
