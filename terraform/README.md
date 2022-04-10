@@ -108,7 +108,7 @@ Name
 
 The terraform scripts provided in this repo are to automate the creation of the resources and deployment of the Cloud Foundation code as described in  [Automating the classification of data uploaded to Cloud Storage](https://cloud.google.com/architecture/automating-classification-of-data-uploaded-to-cloud-storage) . They are not production ready.
 
-To adapt for production use the list below provides guidance:
+To adapt for production the list below provides guidance:
 
 
 
