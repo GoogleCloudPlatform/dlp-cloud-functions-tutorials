@@ -1,0 +1,4 @@
+google-cloud-dlp
+google-cloud-pubsub
+google-cloud-storage
+google-cloud-logging
