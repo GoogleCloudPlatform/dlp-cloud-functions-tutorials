@@ -57,7 +57,7 @@ resource "google_storage_bucket" "function_bucket" {
   location = var.region
    uniform_bucket_level_access = true 
 }
-}
+
 
 
 # Create Pub/Sub topic
