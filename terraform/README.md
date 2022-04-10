@@ -66,7 +66,7 @@ Name
 6. Update the terraform.tfvar file  in this folder with YOUR_PROJECT_ID 
 7. The [DLP service account is not created ](https://cloud.google.com/dlp/docs/iam-permissions?authuser=0#service_account) until at least one call is made to the DLP API. 
 
-    To create the service account  update the curl command below by replacing YOUR_PROJECT_ID and then  run the command 
+    To create the service account  update the curl command below by replacing YOUR_PROJECT_ID and then run the command 
 
         curl --request POST \
         "https://dlp.googleapis.com/v2/projects/YOUR_PROJECT_ID/locations/us-central1/content:inspect" \
@@ -91,7 +91,7 @@ Name
 10. Copy the python code and requirements .txt file from ~/dlp-cloud-functions-tutorials/gcs-dlp-classification-python into this folder
 11. Update the variables in the python.main file to reflect your values
 12. Change folder to ../dlpfunction
-13. Update the terraform.tfvar file in this folder with the following values
+13. Update the terraform.tfvar file in this folder with the value for YOUR_PROJECT_ID
 14. Deploy the resource defined in dlp.tf
 
     terraform init
