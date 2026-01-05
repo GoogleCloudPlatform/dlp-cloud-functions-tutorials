@@ -1,4 +1,3 @@
-
 # Cloud function that uses the Data loss Prevention API to classify files uploaded to a Cloud storage bucket
 
 Pre-reqs : See the tutorial that accompanies this example:
@@ -40,7 +39,7 @@ Change directories to the directory that contains the sample data
 
 Upload the sample files to `${YOUR_QUARANTINE_BUCKET}`
 
-`gsutil -m cp * gs://${YOUR_QUARANTINE_BUCKET}/`
+`gcloud storage cp * gs://${YOUR_QUARANTINE_BUCKET}/`
 
 ## Refs
 

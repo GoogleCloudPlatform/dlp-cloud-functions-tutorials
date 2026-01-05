@@ -32,9 +32,9 @@ if [ "$test_project" == "$PROJECT_ID" ];
 fi
 
 # Prepare test enviroment for a test run
-gsutil rm gs://$stage_bucket/##
-gsutil rm gs://$sensitive_bucket/##
-gsutil rm gs://$non_sensitive_bucket/##
+gcloud storage rm gs://$stage_bucket/##
+gcloud storage rm gs://$sensitive_bucket/##
+gcloud storage rm gs://$non_sensitive_bucket/##
 
 if [ -e $sensitive_file ];
     then
@@ -53,7 +53,7 @@ if [ -e $non_sensitive_file ];
 fi
 
 # Check buckets are empty
-export check_empty_stage=$(gsutil ls gs://$stage_bucket/)
+export check_empty_stage=$(gcloud storage ls gs://$stage_bucket/)
 if [ "$check_empty_stage" != ""  ];
     then
         echo Stage bucket is not empty
@@ -62,7 +62,7 @@ if [ "$check_empty_stage" != ""  ];
         echo No files found
 fi
 
-export check_empty_sensitive=$(gsutil ls gs://$sensitive_bucket/)
+export check_empty_sensitive=$(gcloud storage ls gs://$sensitive_bucket/)
 if [ "$check_empty_sensitive" != ""  ];
     then
         echo Sensitive bucket is not empty
@@ -71,7 +71,7 @@ if [ "$check_empty_sensitive" != ""  ];
         echo No files found
 fi
 
-export check_empty_nonsensitive=$(gsutil ls gs://$non_sensitive_bucket/)
+export check_empty_nonsensitive=$(gcloud storage ls gs://$non_sensitive_bucket/)
 if [ "$check_empty_nonsensitive" != ""  ];
     then
         echo Non sensitive bucket is not empty
@@ -81,13 +81,13 @@ if [ "$check_empty_nonsensitive" != ""  ];
 fi
 
 # Upload test files
-gsutil cp $non_sensitive_file $sensitive_file gs://$stage_bucket/
+gcloud storage cp $non_sensitive_file $sensitive_file gs://$stage_bucket/
 
 # Wait for function to execute
  sleep 30s
 
 # Check files moved to correct bucket
-export check_non_sensitive_file_exists=$(gsutil ls gs://$non_sensitive_bucket/$non_sensitive_file)
+export check_non_sensitive_file_exists=$(gcloud storage ls gs://$non_sensitive_bucket/$non_sensitive_file)
 echo check_non_sensitive_file_exists =  $check_non_sensitive_file_exists
 if [ "$check_non_sensitive_file_exists" != ""  ];
     then
@@ -97,7 +97,7 @@ if [ "$check_non_sensitive_file_exists" != ""  ];
         exit 1
 fi
 
-export check_sensitive_file_exists=$(gsutil ls gs://$sensitive_bucket/$sensitive_file)
+export check_sensitive_file_exists=$(gcloud storage ls gs://$sensitive_bucket/$sensitive_file)
 if [ "$check_sensitive_file_exists" != ""  ];
     then
         echo Sensitive file moved to correct bucket
